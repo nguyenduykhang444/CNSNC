@@ -1,0 +1,56 @@
+Giai đoạn 5: Phòng và trị bệnh
+
+* Dấu hiệu bệnh ở tôm thẻ chân trắng:
+
+- Vỏ: màu sậm hoặc xám hơn bình thường, không còn độ bóng, có vết mòn và chất lạ đóng vảy
+- Đuôi: rủ xuống và không còn xòe ra
+- Ruột: rỗng và không có thức ăn
+- Mang:	chuyển sang màu vàng, cam, đỏ, nâu,… hơi giòn thối rữa với tình trạng phù nước
+- Chân:	có vết rách, xước hoặc bẩn
+- Gan, lá lách:	teo nhỏ và có màu sẫm hơn bình thường
+
+* Biện pháp phòng bệnh:
+– Để tránh hiện tượng tôm sốc môi trường nước ao ta cấp nước bổ sung được xây dựng trong nhà bạt.
+– Định kỳ sử dụng Iotdin phòng bệnh 20 ngày/lần vào những tháng đầu sau giảm 15 ngày/lần. Liều lượng dùng theo hướng dẫn của nhà sản xuất.
+– Dùng chế phầm sinh học bón định kỳ 5-7 ngày/lần để gây màu nước và phân hủy khí độc (chú ý, nếu dùng chế phẩm sinh học thì không dùng Iotdin và các chất diệt khuẩn khác).
+
+- Quản lý thức ăn:
+    Cho ăn đúng lượng – đúng thời điểm, tránh dư thừa gây ô nhiễm.
+    Sử dụng thức ăn chất lượng, bảo quản nơi khô ráo, thoáng mát.
+    Kiểm tra sàng ăn 2–3 lần/ngày để điều chỉnh lượng cho phù hợp.
+
+- Tăng cường sức đề kháng cho tôm:
+    Bổ sung vitamin C, men tiêu hóa, khoáng tổng hợp vào thức ăn 3–4 lần/tuần.
+    Định kỳ trộn tỏi, β-glucan, thảo dược để hỗ trợ hệ miễn dịch.
+    Giữ nhiệt độ nước ổn định, tránh biến động quá 2°C trong ngày.
+
+- Kiểm soát nguồn lây bệnh:
+    Lọc nước đầu vào qua túi lọc 60–100 µm.
+    Không lấy nước từ ao khác khi chưa xử lý.
+    Dụng cụ dùng riêng cho từng ao, không dùng chung khi có dấu hiệu bệnh.
+
+* Biện pháp xử lý khi tôm bị bệnh
+- Khi phát hiện dấu hiệu bất thường:
+    Ngừng cho ăn 1–2 ngày để tôm giảm stress.
+    Tăng cường oxy, mở quạt nước 24/24 để tránh tôm nổi đầu.
+    Hút bỏ cặn đáy, bổ sung vi sinh xử lý đáy ao.
+    Kiểm tra nước: đo pH, NH₃, NO₂ để xác định nguyên nhân.
+
+- Sử dụng chế phẩm sinh học:
+    Dùng vi sinh xử lý nước chứa Bacillus subtilis, Nitrosomonas, Lactobacillus.
+    Dùng vi sinh đường ruột trộn vào thức ăn để cân bằng hệ vi khuẩn.
+    Bổ sung dinh dưỡng và khoáng chất
+    Trộn vitamin C + men tiêu hóa + khoáng tổng hợp vào thức ăn 5–7 ngày liên tục.
+    Duy trì nhiệt độ ổn định, tránh mưa to hoặc nắng gắt đột ngột.
+
+- Biện pháp khẩn cấp (khi bệnh nặng)
+    Cách ly ao bệnh: không xả nước ra môi trường.
+    Khử trùng: dùng BKC, Iodine, hoặc Clorin nồng độ phù hợp.
+    Báo cán bộ thủy sản địa phương để được hướng dẫn cụ thể.
+    
+* Quản lý sau khi bệnh được khống chế:
+- Giảm mật độ tôm nếu quá dày.
+- Duy trì vi sinh ổn định để tái cân bằng hệ sinh thái ao.
+- Ghi chép chi tiết quá trình xử lý để rút kinh nghiệm cho vụ sau.
+
+Chú ý: Trong quá trình nuôi cần thường xuyên kiểm tra, tránh trường hợp rách bạt khi gió to. Một yếu tố quan trọng khi nuôi tôm thẻ chân trắng trong nhà bạt là cần chuẩn bị nhiều thiết bị quạt nước và thời gian chạy quạt phải đảm bảo cung cấp đầy đủ ôxy trong quá trình nuôi.

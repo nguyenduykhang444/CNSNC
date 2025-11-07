@@ -1,0 +1,59 @@
+Giai đoạn 3: Chăm sóc và quản lý
+
+* Giải pháp kỹ thuật giữ và ổn định nhiệt độ:
+
+Đây là giải pháp quan trọng nhất nhằm đảm bảo sự thành công của vụ nuôi.
+Để duy trì nhiệt độ trong ngưỡng chịu đựng của tôm thẻ chân trắng, hệ thống ao ương và ao nuôi phải được thiết kế có mái che bằng bạt hoặc các vật liệu polymer khác.
+Mái che cần được thiết kế phủ kín hoàn toàn ao ương và ao nuôi để tránh gió lùa cũng như hạn chế tác động của nhiệt độ bên ngoài.
+Mực nước trong ao nuôi phải duy trì ở mức 1,5 m. Cần thường xuyên giữ ổn định màu nước trong suốt vụ nuôi để đảm bảo môi trường thích hợp cho tôm phát triển.
+
+* Quản lý thức ăn:
+
+GIAI ĐOẠN 1: TÔM MỚI THẢ 1-10 NGÀY TUỔI
+Mục tiêu: Giúp tôm con bắt mồi tốt, thích nghi môi trường.
+- Thức ăn: bột mịn hoặc hạt siêu nhỏ (PL), đạm 40-45%.
+- Số cữ ăn: 5-6 lần/ngày.
+- Lượng ăn: 100-150 g/100.000 con/ngày.
+- Cho ăn rải đều quanh bờ ao, tránh dư thừa.
+- Bổ sung: men tiêu hóa, vitamin C, vi sinh đường ruột.
+
+GIAI ĐOẠN 2: TÔM 11-30 NGÀY TUỔI
+Mục tiêu: Tăng trưởng ổn định, ruột hoạt động tốt.
+- Thức ăn: hạt nhỏ (0.5-1.0 mm), đạm 40-42%.
+- Số cữ ăn: 4 lần/ngày (7h-11h-16h-21h).
+- Lượng ăn: 5-7% trọng lượng đàn tôm.
+- Kiểm tra sàng ăn sau 2 giờ, còn >20% thì giảm lượng.
+- Giữ màu nước ổn định (độ trong 30-40 cm), oxy ≥ 4 mg/L.
+
+GIAI ĐOẠN 3: TÔM 31-60 NGÀY TUỔI
+Mục tiêu: Giai đoạn tăng trưởng nhanh.
+- Thức ăn: viên 1.2-1.5 mm, đạm 38-40%.
+- Số cữ ăn: 4 lần/ngày.
+- Lượng ăn: 4-6% trọng lượng đàn tôm.
+- Kiểm tra trọng lượng mẫu mỗi 10 ngày.
+- Bổ sung định kỳ vitamin C, khoáng, men vi sinh.
+
+GIAI ĐOẠN 4: TÔM 61-90 NGÀY TUỔI
+Mục tiêu: Giai đoạn phát triển mạnh.
+- Thức ăn: viên 1.8-2.0 mm, đạm 36-38%.
+- Số cữ ăn: 3-4 lần/ngày.
+- Lượng ăn: 3-4% trọng lượng đàn tôm.
+- Khi trời mưa hoặc tôm yếu: giảm khẩu phần 30-40%.
+- Kiểm tra pH, DO hàng ngày
+- Tăng quạt nước ban đêm.
+
+GIAI ĐOẠN 5: TÔM 91 NGÀY TRỞ LÊN (CHUẨN BỊ THU HOẠCH)
+Mục tiêu: Đạt kích cỡ thương phẩm, tránh dư thức ăn.
+- Thức ăn: viên 2.2-2.5 mm, đạm 35-36%.
+- Số cữ ăn: 2-3 lần/ngày (sáng và chiều).
+- Lượng ăn: 2.5-3% trọng lượng thân.
+- 7-10 ngày trước thu: giảm dần 10-20%/ngày, ngừng ăn 1 ngày trước thu.
+
+KIỂM SOÁT LƯỢNG ĂN
+| Biểu hiện | Hành động |
+| Sàng ăn còn nhiều (>20%) | Giảm lượng 10-15% |
+| Tôm ăn hết sớm (<1h) | Tăng lượng 10% |
+| Tôm ăn yếu, nổi đầu | Kiểm tra DO, pH, NH3 |
+| Thời tiết mưa / lạnh | Giảm 30-40% khẩu phần |
+| Tôm lột xác | Giảm 20-30% lượng ăn |
+

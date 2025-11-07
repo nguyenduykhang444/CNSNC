@@ -1,0 +1,33 @@
+Giai đoạn 4: Quản lý môi trường ao nuôi
+
+Để tạo môi trường nuôi thích hợp và hạn chế các tác nhân làm ảnh hưởng đến sự sinh trưởng của tôm cần theo dõi các thông tin quan trắc cảnh báo về dịch bệnh trong khu vực để có biện pháp phòng ngừa thích hợp.
+
+Các cơ sở nuôi tôm nên có ao lắng để chủ động nguồn nước cấp vào ao nuôi, cần chủ động quản lý môi trường để có điều chỉnh kịp thời, phù hợp:
+- Hàm lượng oxy hòa tan (DO): Kiểm tra hàng ngày, đặc biệt là vào sáng sớm, kết hợp quan sát biểu hiện của tôm và kiểm tra đáy ao. Nếu DO dưới 4 mg/l đối với tôm sú và dưới 6 mg/l đối với tôm thẻ chân trắng là tôm có biểu hiện bất thường (dạt bờ, nổi đầu, kéo đàn…) và đáy ao có màu đen thì tăng cường quạt nước, sục khí hoặc thay 10 - 20% lượng nước trong ao.                                                                                                                         
+- Độ trong: Nếu < 25 cm nên thay nước tầng mặt từ 15 - 20% lượng nước trong ao để loại bỏ tảo. Nếu nước ao có bọt hoặc độ trong > 50 cm thì bón phân NPK để gây màu nước.
+- Độ pH của nước ao nuôi biến đổi theo chu kỳ ngày, đêm và chu kỳ nuôi. Cần đo pH 2 lần/ngày vào lúc 6 giờ và 18 giờ.
+Khắc phục tình trạng pH thấp: Gây tảo và giữ màu nước thích hợp đảm bảo độ trong đạt từ 30 – 40 cm. Nếu pH < 7, sử dụng vôi tôi - Ca(OH)2 hoà loãng với nước, liều lượng 10 - 20 kg/ha tạt đều khắp ao 1 lần/ngày, dùng 1 - 2 ngày; khi pH đạt 7,5 dùng Dolomite để ổn định pH. Nếu ao nhiễm phèn (nước ao có màu vàng) cần rắc vôi bột dọc theo bờ ao. Ngay sau khi trời mưa to, cần hoà vôi vào nước, tạt đều khắp ao.
+Khắc phục tình trạng pH cao: Sử dụng mật đường 3 kg/1.000 m3 kết hợp sử dụng vi sinh hoặc dùng Acid acetic 3 lít/1.000 m3. Nếu pH > 8,5 thì tiến hành thay nước.
+- Duy trì độ kiềm từ 80 - 150 mg CaCO3/lít; kiểm tra độ kiềm và hàm lượng khí NH3 3 - 5 ngày/lần.
+Khắc phục độ kiềm thấp: Sử dụng Dolomite 15 – 20 kg/1.000 m3 vào ban đêm cho đến khi đạt yêu cầu.
+Khắc phục độ kiềm cao: Sử dụng EDTA 2 - 3 kg/1.000 m3 vào ban đêm.
+
+- Duy trì chất lượng đáy ao:
+Sau 2 tháng thả nuôi, định kỳ thay nước tầng đáy, thường xuyên kiểm tra bùn đáy tại khu vực cho tôm ăn. Nếu bùn đáy ao có màu nâu hoặc có một lớp mỏng màu nâu trên bề mặt là đáy có chất lượng tốt. Nếu nước ao có màu đen, nhiều tảo đáy thì dùng các biện pháp (trừ sử dụng hoá chất) để loại bỏ tảo đáy, kết hợp thay 15 - 20% lượng nước và điều chỉnh lượng thức ăn cho phù hợp. Nếu bùn đáy có màu đen, sử dụng chế phẩm sinh học để phân huỷ chất hữu cơ, giảm lượng thức ăn (10%) trong 2 ngày, thay 15 - 20% lượng nước, kết hợp với dùng bơm để hút bùn đen ở đáy đồng thời quạt nước, sục khí để tăng cường ôxy.
+- Tùy vào môi trường ao nuôi để điều chỉnh và bón lượng vôi cho phù hợp. Có thể bón vôi nông nghiệp CaCO3 định kỳ 10 ngày/lần vào lúc 20 – 21 giờ với liều lượng 10 - 20 kg/1.000 m3 tùy theo độ mặn để điều chỉnh pH thích hợp:
+Nếu độ mặn dưới 17‰ thì điều chỉnh pH từ 8,2 - 8,4;
+Nếu độ mặn trên 17‰ thì điều chỉnh pH giảm dần xuống 8,0 - 8,2;
+Nếu độ mặn = 25‰ thì điều chỉnh pH bằng 7,7 - 7,8.
+Đến 11-12 giờ ngày hôm sau, cấy vi sinh theo chỉ dẫn của nhà cung cấp để làm sạch môi trường.
+Nếu độ mặn giảm đột ngột do mưa thì phải điều chỉnh bằng nước ót (nước muối) hoặc bổ sung muối hột;
+- Khi tảo trong ao phát triển mạnh, màu nước thay đổi, pH dao động trong ngày > 0,5: Cần thay tối thiểu 30% lượng nước trong ao bằng nguồn nước đảm bảo chất lượng; Hòa tan 2 - 3 kg đường cát/1.000 m2 và tạt đều ao vào lúc 9 - 10 giờ sáng; Chạy quạt nước, sục khí liên tục tối thiểu trong 2 giờ.
+- Khi nhiệt độ nước ao tăng trên 350C: Cần giảm thức ăn; bổ sung vitamin C (trộn vào thức ăn); tăng thời gian chạy quạt nước, sục khí.
+- Khi nhiệt độ nước ao giảm xuống dưới 220C, tôm có hiện tượng vùi đầu, phải giảm lượng thức ăn và bổ sung các chất dinh dưỡng để tăng sức đề kháng cho tôm.
+- Hạn chế lấy nước vào ao nuôi. Chỉ thay nước khi cần điều chỉnh các yếu tố môi trường và đáy ao hoặc cấp nước bổ sung khi nước trong ao bị cạn. Nguồn nước cấp phải lấy từ ao chứa đã được xử lý và phải lọc qua lưới mắt nhỏ. Lấy nước vào ao lắng rồi xử lý Chlorine liều 30 kg/1.000 m3 chạy quạt liên tục, đến khi hết dư lượng Chlorine thì tiến hành bơm vào ao nuôi (qua túi lọc). Nên thay nước từ từ và thực hiện nhiều lần để tránh gây sốc cho tôm.
+
+* Một số lưu ý:
+- Định kỳ bổ sung men vi sinh để hạn chế ô nhiễm môi trường.
+- Nâng cao mực nước đạt tối đa để ổn định nhiệt độ.
+- Thức ăn tự nhiên ít nên màu nước ít ổn định trong thời gian đầu, cần theo dõi để xử lý kịp thời.
+- Khi lấy nước nên kiểm tra hàm lượng kim loại nặng như Cu, Zn, Fe,… và các loại khí độc H₂S, NH₃, SO₂.
+- Đặc điểm của loài tôm này là phát triển đồng đều và được thả với mật độ cao nên lột xác đồng loạt, dẫn đến độ kiềm dễ bị dao động, cần thường xuyên bổ sung vôi nông nghiệp để ổn định độ kiềm.

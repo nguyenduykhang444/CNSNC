@@ -1,0 +1,46 @@
+Giai đoạn 6: Thu hoạch và xử lý sau nuôi
+
+* Xác định thời điểm thu hoạch
+- Dựa vào tuổi tôm
+    Thông thường, tôm thẻ chân trắng đạt kích cỡ thương phẩm sau 70–90 ngày nuôi, tùy theo mật độ, điều kiện chăm sóc và nhiệt độ nước.
+    Một số mô hình siêu thâm canh có thể thu sớm hơn (55–65 ngày) nếu đạt trọng lượng yêu cầu.
+
+- Dựa vào kích cỡ và tăng trưởng
+    Tôm đạt 25–30 g/con (tức 33–40 con/kg) là cỡ thu hoạch phổ biến.
+    Nếu thị trường cần tôm nhỏ (50–60 con/kg) hoặc tôm lớn (20 con/kg) thì điều chỉnh thời gian phù hợp.
+    Có thể lấy mẫu kiểm tra mỗi 5–7 ngày bằng vó hoặc chài để theo dõi kích cỡ.
+
+* Công tác chuẩn bị trước khi thu hoạch
+- Chuẩn bị ao nuôi
+    Ngừng cho ăn trước khi thu 1 ngày để tôm tiêu hóa hết thức ăn, tránh ô nhiễm khi thu.
+    Tăng cường oxy hòa tan (DO) lên trên 6 mg/L để giúp tôm khỏe, giảm sốc.
+    Nếu nước ao đục hoặc có nhiều khí độc, nên thay 20–30% nước trước khi thu.
+- Kiểm tra điều kiện môi trường
+    Nhiệt độ nước: 28–32°C.
+    pH: 7.8–8.3.
+    Độ trong: 30–40 cm.
+    Nếu trời mưa to hoặc nắng gắt, nên trì hoãn việc thu hoạch để tránh tôm bị sốc môi trường.
+
+* Xử lý ao và môi trường sau thu hoạch
+- Thu gom và xử lý bùn đáy:
+    Sau khi thu tôm, hút toàn bộ bùn, phân, xác tôm ở giữa ao.
+    Phơi khô đáy ao 7–10 ngày để phân hủy chất hữu cơ.
+    Rải vôi CaO (80–100 kg/1.000 m²) để diệt khuẩn và trung hòa môi trường.
+
+- Xử lý nước thải:
+    Tuyệt đối không xả trực tiếp nước thải ra sông, kênh rạch.
+    Dẫn nước qua ao lắng hoặc bể xử lý riêng, xử lý bằng:
+    Clorin 30 ppm hoặc chế phẩm sinh học phân hủy hữu cơ.
+    Sau khi đạt chuẩn (BOD, COD, NH₃ thấp), mới được thải ra môi trường.
+
+- Ghi chép và đánh giá sau vụ nuôi
+    Ghi lại đầy đủ thông tin: ngày thu hoạch, sản lượng, cỡ tôm, giá bán, chi phí, tỷ lệ sống, lợi nhuận.
+    Đánh giá nguyên nhân thành công hoặc thất bại để cải thiện vụ sau.
+    Vệ sinh toàn bộ dụng cụ, ao, bể, hệ thống quạt nước – chuẩn bị cho vụ mới.
+
+* Một số lưu ý quan trọng khi thu hoạch:
+- Thu vào buổi sáng sớm hoặc chiều mát, tránh nắng gắt giữa trưa.
+- Không thu hoạch khi trời mưa hoặc áp thấp nhiệt đới vì tôm dễ sốc môi trường.
+- Không dùng hóa chất khử trùng nước ngay trước khi thu.
+- Nếu tôm có dấu hiệu bệnh → cách ly, khử trùng trước khi xả nước ra môi trường.
+- Với mô hình nuôi siêu thâm canh, nên thu dứt điểm, không thu nhiều lần để hạn chế stress ở tôm.
