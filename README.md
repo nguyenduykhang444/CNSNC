@@ -1,6 +1,3 @@
-Tất nhiên, đây là một phiên bản `README.md` khác, được cấu trúc lại một chút. Bạn có thể sao chép và sử dụng trực tiếp.
-
-````markdown
 # Dự án Chatbot RAG: Quy trình Nuôi Tôm
 
 ## Giới thiệu
@@ -13,17 +10,9 @@ Tất nhiên, đây là một phiên bản `README.md` khác, được cấu tr�
 
 Để chạy dự án, bạn cần cài đặt các thư viện Python được liệt kê trong `requirements.txt`.
 
-**1. Tạo môi trường ảo (Khuyến khích):**
+**1. Python 3.10+: Dự án được khuyến nghị chạy với Python 3.10 trở lên.**
 
-```bash
-# Windows
-python -m venv venv
-venv\Scripts\activate
 
-# macOS/Linux
-python3 -m venv venv
-source venv/bin/activate
-````
 
 **2. Cài đặt thư viện:**
 
