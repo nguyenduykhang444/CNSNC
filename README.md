@@ -62,7 +62,3 @@ GOOGLE_API_KEY="YOUR_API_KEY_HERE"
   * **NGUYỄN TRƯƠNG NGỌC THẢO LOAN** (M5125016)
   * **NGUYỄN THỊ ANH THƯ** (M5125025)
 
-<!-- end list -->
-
-```
-```
