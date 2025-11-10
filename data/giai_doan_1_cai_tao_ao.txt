@@ -1,55 +1,35 @@
-Tiêu đề: Giai đoạn 1: Cải tạo ao nuôi tôm thẻ chân trắng
+Giai đoạn 1: Cải tạo ao nuôi tôm thẻ chân trắng
 
-Nội dung:
+* Nội dung:
+    Quy trình cải tạo ao nuôi là bước đầu tiên và vô cùng quan trọng, quyết định phần lớn sự thành công của vụ nuôi. Mục tiêu là tạo ra một môi trường ao sạch, an toàn, và giàu dinh dưỡng tự nhiên trước khi thả giống.
+    Các bước cải tạo ao tiêu chuẩn (thường áp dụng cho ao đất hoặc ao lót bạt):
 
-Quy trình cải tạo ao nuôi là bước đầu tiên và vô cùng quan trọng, quyết định phần lớn sự thành công của vụ nuôi. Mục tiêu là tạo ra một môi trường ao sạch, an toàn, và giàu dinh dưỡng tự nhiên trước khi thả giống.
+* Vệ sinh cơ học:
+    Đối với ao cũ: Tháo cạn nước, vét sạch bùn đáy. Bùn đáy là nơi chứa mầm bệnh và khí độc từ vụ trước.
+    Đối với ao mới: San lấp mặt bằng đáy ao cho bằng phẳng, dốc nhẹ về phía cống thoát.
+    Gia cố bờ ao, kiểm tra và sửa chữa các hư hỏng, lỗ mọi.
 
-Các bước cải tạo ao tiêu chuẩn (thường áp dụng cho ao đất hoặc ao lót bạt):
+* Phơi đáy ao:
+    Sau khi vét bùn, tiến hành phơi đáy ao từ 5-7 ngày.
+    Việc phơi ao giúp tiêu diệt mầm bệnh còn sót lại, oxy hóa vật chất hữu cơ và giải phóng một phần khí độc.
 
-Vệ sinh cơ học:
+* Xử lý đáy ao (Bón vôi):
+    Mục đích: Khử phèn, ổn định pH đất nền, và tiêu diệt mầm bệnh.
+    Tùy vào độ pH của đất mà bón các loại vôi như vôi nông nghiệp (CaCO3) hoặc vôi nóng (CaO). Liều lượng dao động từ 700-1.000 kg/ha.
 
-Đối với ao cũ: Tháo cạn nước, vét sạch bùn đáy. Bùn đáy là nơi chứa mầm bệnh và khí độc từ vụ trước.
+* Lấy nước và xử lý nước:
+    Nước được lấy vào ao qua lưới lọc mịn để ngăn cá tạp, trứng cá, và các vật chủ mang mầm bệnh.
+    Chạy quạt nước liên tục trong 2-3 ngày để tăng cường oxy hòa tan.
+    Diệt khuẩn (Quan trọng): Sử dụng các hóa chất diệt khuẩn được cấp phép (ví dụ như Chlorine) để xử lý nước. Sau khi diệt khuẩn, cần chạy quạt mạnh và chờ 5-7 ngày để hóa chất bay hơi hoàn toàn trước khi tiến hành bước tiếp theo.
 
-Đối với ao mới: San lấp mặt bằng đáy ao cho bằng phẳng, dốc nhẹ về phía cống thoát.
+* Gây màu nước:
+    Mục đích: Tạo nguồn thức ăn tự nhiên (tảo) cho tôm trong giai đoạn đầu và ổn định môi trường nước.
+    Sử dụng các chế phẩm sinh học (vi sinh) hoặc phân bón chuyên dụng để kích thích tảo có lợi (như tảo Khuê) phát triển.
+    Màu nước lý tưởng là màu xanh nõn chuối hoặc vàng nâu (màu trà).
 
-Gia cố bờ ao, kiểm tra và sửa chữa các hư hỏng, lỗ mọi.
-
-Phơi đáy ao:
-
-Sau khi vét bùn, tiến hành phơi đáy ao từ 5-7 ngày.
-
-Việc phơi ao giúp tiêu diệt mầm bệnh còn sót lại, oxy hóa vật chất hữu cơ và giải phóng một phần khí độc.
-
-Xử lý đáy ao (Bón vôi):
-
-Mục đích: Khử phèn, ổn định pH đất nền, và tiêu diệt mầm bệnh.
-
-Tùy vào độ pH của đất mà bón các loại vôi như vôi nông nghiệp (CaCO3) hoặc vôi nóng (CaO). Liều lượng dao động từ 700-1.000 kg/ha.
-
-Lấy nước và xử lý nước:
-
-Nước được lấy vào ao qua lưới lọc mịn để ngăn cá tạp, trứng cá, và các vật chủ mang mầm bệnh.
-
-Chạy quạt nước liên tục trong 2-3 ngày để tăng cường oxy hòa tan.
-
-Diệt khuẩn (Quan trọng): Sử dụng các hóa chất diệt khuẩn được cấp phép (ví dụ như Chlorine) để xử lý nước. Sau khi diệt khuẩn, cần chạy quạt mạnh và chờ 5-7 ngày để hóa chất bay hơi hoàn toàn trước khi tiến hành bước tiếp theo.
-
-Gây màu nước:
-
-Mục đích: Tạo nguồn thức ăn tự nhiên (tảo) cho tôm trong giai đoạn đầu và ổn định môi trường nước.
-
-Sử dụng các chế phẩm sinh học (vi sinh) hoặc phân bón chuyên dụng để kích thích tảo có lợi (như tảo Khuê) phát triển.
-
-Màu nước lý tưởng là màu xanh nõn chuối hoặc vàng nâu (màu trà).
-
-Kiểm tra chỉ tiêu môi trường:
-
-Trước khi thả giống 1-2 ngày, phải kiểm tra toàn bộ các chỉ tiêu nước:
-
-pH: 7.5 - 8.5 (lý tưởng là 7.8 - 8.2)
-
-Độ kiềm (Alkalinity): 120 - 180 mg/L CaCO3. Đây là chỉ số rất quan trọng cho tôm thẻ, giúp tôm cứng vỏ.
-
-Độ mặn: 10 - 25 ppt (phần ngàn).
-
-Khí độc (NH3, NO2): Phải bằng 0.
+* Kiểm tra chỉ tiêu môi trường:
+    Trước khi thả giống 1-2 ngày, phải kiểm tra toàn bộ các chỉ tiêu nước:
+    pH: 7.5 - 8.5 (lý tưởng là 7.8 - 8.2)
+    Độ kiềm (Alkalinity): 120 - 180 mg/L CaCO3. Đây là chỉ số rất quan trọng cho tôm thẻ, giúp tôm cứng vỏ.
+    Độ mặn: 10 - 25 ppt (phần ngàn).
+    Khí độc (NH3, NO2): Phải bằng 0.
