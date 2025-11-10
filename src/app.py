@@ -3,19 +3,16 @@ import dotenv
 import google.generativeai as genai
 import streamlit as st
 
-# 🧩 Tải biến môi trường từ file .env
+# Kết nối Genini api
 dotenv.load_dotenv()
 api_key = os.environ.get("GOOGLE_API_KEY")
-
-# ⚙️ Cấu hình Gemini
 if not api_key:
     st.error("❌ Không tìm thấy GOOGLE_API_KEY trong file .env")
     st.stop()
-
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-2.5-pro")
 
-# 📁 Hàm tải dữ liệu từ thư mục 'data'
+# Load dữ liệu đào tạo để chatbot đọc và trả lời
 def load_data():
     data = ""
     data_dir = "data"
@@ -34,19 +31,18 @@ def load_data():
             st.error(f"Lỗi khi đọc file {file}: {e}")
     return data
 
-# 🌊 Giao diện chính
+# Giao diện chính
 st.set_page_config(page_title="Chatbot Hỏi-Đáp Gemini", page_icon="🦐", layout="wide")
-
 st.title("🦐 Chatbot Hỏi-Đáp về Quy Trình Nuôi Tôm (Gemini)")
 
 data = load_data()
 if not data:
     st.info("💡 Hãy thêm các file .txt chứa nội dung quy trình vào thư mục `data/` để chatbot có dữ liệu nền.")
 
-# 🧠 Nhập câu hỏi
+# Nhập câu hỏi
 question = st.text_area("💬 Nhập câu hỏi của bạn:", placeholder="Ví dụ: Khi nào cần thay nước ao nuôi tôm?", height=100)
 
-# 🔘 Gửi câu hỏi
+# Gửi câu hỏi
 if st.button("🚀 Gửi câu hỏi", type="primary"):
     if not question.strip():
         st.warning("⚠️ Bạn chưa nhập câu hỏi.")
@@ -67,7 +63,7 @@ if st.button("🚀 Gửi câu hỏi", type="primary"):
                 st.error(f"❌ Lỗi khi gọi API: {e}")
                 st.info("Kiểm tra lại kết nối mạng hoặc giới hạn token của dữ liệu.")
 
-# 📘 Gợi ý
+# Gợi ý
 st.markdown("---")
 st.markdown("**📎 Gợi ý:** Hãy đặt các file `.txt` vào thư mục `data/` (cùng cấp với file này).")
 st.markdown("**Ví dụ:** `data/quytrinhchamsoc.txt`, `data/kiemtrathucan.txt`, ...")
