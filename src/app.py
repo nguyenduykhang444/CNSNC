@@ -2,8 +2,8 @@ import os
 import dotenv
 import google.generativeai as genai
 import streamlit as st
-import re               ## <<< MỚI: Thêm thư viện Regex để tìm thẻ
-import random           ## <<< MỚI: Thêm thư viện Random để chọn ảnh
+import re            
+import random        
 
 # --- CẤU HÌNH GEMINI ---
 dotenv.load_dotenv()
