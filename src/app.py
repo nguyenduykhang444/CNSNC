@@ -17,7 +17,7 @@ if not api_key:
 
 try:
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-2.5-flash") # Đã đổi sang 1.5 Flash cho ổn định hơn
+    model = genai.GenerativeModel("gemini-2.5-flash")
 except Exception as e:
     st.error(f"Lỗi khi cấu hình Gemini: {e}")
     st.stop()
