@@ -237,7 +237,7 @@ def render_history_sidebar():
         with col2:
             # Tạo icon 3 chấm (ellipsis) cho tùy chọn
             try:
-                with st.popover("⋮", key=f"popover_{chat_id}"):
+                with st.popover("...", key=f"popover_{chat_id}"):
                     st.markdown(f"**{name}**")
                     st.markdown("---")
                 
@@ -307,7 +307,8 @@ with st.sidebar:
         new_chat_session()
     
     # --- NÚT TẢI LẠI NGỮ CẢNH (Rerun toàn bộ) ---
-    if st.button("🔄 Tải lại Ngữ cảnh (Rerun)", use_container_width=True, help="Xóa cache và khởi động lại toàn bộ ứng dụng."):
+    
+    if st.button("🔄 Khởi động lại", use_container_width=True, help="Xóa cache và khởi động lại toàn bộ ứng dụng."):
         st.cache_data.clear()
         st.rerun()
 
