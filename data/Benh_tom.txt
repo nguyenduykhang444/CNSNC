@@ -9,7 +9,7 @@ Mô tả: Là tình trạng mang của tôm chuyển sang màu nâu hoặc đen.
 [IMAGE_PATH_DIR: data/Images/BG/]
 
 3. WSSV (Bệnh Đốm Trắng)
-Mô tả: Gây ra bởi virus WSSV (White Spot Syndrome Virus). Đây là một trong những bệnh nguy hiểm nhất, lây lan rất nhanh và tỷ lệ chết cao. Dấu hiệu đặc trưng là các đốm trắng tròn (kích thước 0.5-2mm) xuất hiện rõ bên dưới lớp vỏ kitin, ban đầu ở giáp đầu ngực, sau đó lan ra toàn thân. Tôm bệnh thường bỏ ăn, bơi lờ đờ và tấp mé.
+Mô tả: Gây ra bởi virus WSSV (White Spot Syndrome Virus). Đây là một trong những bệnh nguy hiểm nhất, lây lan rất nhanh và tỷ lệ chết cao. Dấu hiệu đặc trưng là các đốm trắng tròn (kích thước 0.5-2mm) xuất hiện rõ bên dưới lớp vỏ kitin, ban đầu ở giáp đầu ngực, sau đó lan ra toàn thân. Tôm bơi lờ đờ, phản xạ yếu, dễ bắt hơn bình thường. Giảm ăn hoặc bỏ ăn hoàn toàn trong vài ngày. Tập trung gần bờ ao, quạt nước hoặc nổi đầu trên mặt nước.
 [IMAGE_PATH_DIR: data/Images/WSSV/]
 
 4. WSSV_BG (Đồng Nhiễm Đốm Trắng và Đen Mang)
