@@ -228,7 +228,7 @@ def render_history_sidebar():
         name = chat_data["name"]
         exp_key = f"expander_{chat_id}_{idx}"
         # Tạo giao diện list chat
-        col1, col2 = st.sidebar.columns([0.8, 0.2])
+        col1, col2 = st.sidebar.columns([0.6, 0.4])
         
         with col1:
             if st.button(name, key=f"select_{chat_id}", 
@@ -251,7 +251,7 @@ def render_history_sidebar():
                         placeholder="✎ Đổi tên"
                     )
                     # --- NÚT LƯU TÊN ---
-                    col_save, col_delete = st.columns([0.5, 0.5])
+                    col_save, col_delete = st.columns([0.9, 0.9])
                     with col_save:
                         if st.button("Lưu", key=f"rename_button_{chat_id}_{idx}", use_container_width=True):
                             if new_name and new_name != name:
