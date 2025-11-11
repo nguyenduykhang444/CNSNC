@@ -221,25 +221,32 @@ if st.session_state.current_chat_id and st.session_state.current_chat_id in st.s
         with chat_container.chat_message(role):
             display_message_with_images(msg["text"])
 
-# --- 5. KHUNG NHẬP LIỆU ---
+# --- KHUNG NHẬP LIỆU VÀ HIỂN THỊ TRẢ LỜI CÓ HÌNH ẢNH ---
 if prompt := st.chat_input("Hỏi về quy trình nuôi tôm..."):
     # Hiển thị câu hỏi của người dùng
     with chat_container.chat_message("user"):
-        display_message_with_images(prompt) 
+        display_message_with_images(prompt)
 
     try:
         chat = st.session_state.chat
         with st.spinner("Bot đang suy nghĩ..."):
             response = chat.send_message(prompt)  # Gửi câu hỏi tới Gemini model
 
-        # Hiển thị câu trả lời từ chatbot
-        response_text = response.text if hasattr(response, "text") else str(response)
+        # Lấy nội dung trả lời (text + thẻ hình ảnh)
+        response_text = ""
+        if hasattr(response, "text"):
+            response_text = response.text
+        elif hasattr(response, "parts"):
+            # Trường hợp model trả về nhiều phần
+            response_text = " ".join([part.text for part in response.parts if hasattr(part, "text")])
+
+        # Hiển thị trả lời và hình ảnh
         if response_text:
-            with chat_container.chat_message("assistant"):
-                display_message_with_images(response_text)
+            # Tách text và thẻ ảnh ra hiển thị
+            display_message_with_images(response_text)
         else:
             st.warning("🤖 Bot trả lời trống.")
-            
+
         # --- Lưu lịch sử chat ---
         if st.session_state.current_chat_id:
             cid = st.session_state.current_chat_id
