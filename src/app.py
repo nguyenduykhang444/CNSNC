@@ -223,7 +223,7 @@ def render_history_sidebar():
         return
 
     # Hiển thị tất cả các cuộc trò chuyện
-    for chat_id, chat_data in st.session_state.all_chats.items():
+    for idx, (chat_id, chat_data) in enumerate(st.session_state.all_chats.items()):
         name = chat_data["name"]
         
         # Tạo giao diện list chat
@@ -231,55 +231,52 @@ def render_history_sidebar():
         
         with col1:
             if st.button(name, key=f"select_{chat_id}", use_container_width=True, 
-                         type="primary" if chat_id == st.session_state.current_chat_id else "secondary"):
+                        type="primary" if chat_id == st.session_state.current_chat_id else "secondary"):
                 select_chat(chat_id)
         
         with col2:
             # Tạo icon 3 chấm (ellipsis) cho tùy chọn
             try:
-                with st.popover("...", key=f"popover_{chat_id}"):
+                with st.popover("⋮", key=f"popover_{chat_id}"):
                     st.markdown(f"**{name}**")
+                    st.markdown("---")
                 
                     # --- NÚT ĐỔI TÊN ---
-                    st.markdown("---")
-                    new_name = st.text_input("Đổi tên cuộc trò chuyện:", value=name, key=f"rename_input_{chat_id}")
-                    if st.button("💾 Lưu Tên Mới", key=f"rename_button_{chat_id}", use_container_width=True):
+                    new_name = st.text_input(
+                        "Đổi tên cuộc trò chuyện:", 
+                        value=name, 
+                        key=f"rename_input_{chat_id}_{idx}"
+                    )
+                    
+                    if st.button("Lưu Tên Mới", key=f"rename_button_{chat_id}_{idx}", use_container_width=True):
                         if new_name and new_name != name:
                             rename_chat(chat_id, new_name)
                         st.rerun() 
                 
-                    # --- NÚT CHIA SẺ (Mô phỏng) ---
-                    st.markdown("---")
-                    # Thêm một nút mô phỏng chức năng chia sẻ (thực tế cần logic phức tạp hơn)
-                    share_link = f"Đường dẫn đến chat này:\n(Tính năng này cần triển khai backend)"
-                    st.code(share_link)
+            
                 
                     # --- NÚT XÓA ---
                     st.markdown("---")
-                    if st.button("🗑️ Xóa Cuộc Trò Chuyện", key=f"delete_{chat_id}", use_container_width=True):
+                    if st.button("🗑️ Xóa Cuộc Trò Chuyện", key=f"delete_{chat_id}_{idx}", use_container_width=True):
                         delete_chat(chat_id)
             except TypeError:
                 # Fallback cho phiên bản Streamlit cũ không hỗ trợ 'key'
-                with st.popover("..."):
-                    st.markdown(f"**{name}**")
-                    
-                    # --- NÚT ĐỔI TÊN ---
-                    st.markdown("---")
-                    new_name = st.text_input("Đổi tên cuộc trò chuyện:", value=name)
-                    if st.button("💾 Lưu Tên Mới", use_container_width=True):
-                        if new_name and new_name != name:
-                            rename_chat(chat_id, new_name)
-                        st.rerun() 
-                    
-                    # --- NÚT CHIA SẺ (Mô phỏng) ---
-                    st.markdown("---")
-                    share_link = f"Đường dẫn đến chat này:\n(Tính năng này cần triển khai backend)"
-                    st.code(share_link)
-                    
-                    # --- NÚT XÓA ---
-                    st.markdown("---")
-                    if st.button("🗑️ Xóa Cuộc Trò Chuyện", use_container_width=True):
-                        delete_chat(chat_id)
+                st.markdown(f"**{name}**")
+                st.markdown("---")
+                new_name = st.text_input(
+                    "Đổi tên cuộc trò chuyện:", 
+                    value=name,
+                    key=f"rename_input_{chat_id}_{idx}_fallback"
+                )
+                if st.button("Lưu Tên Mới", key=f"rename_button_{chat_id}_{idx}_fallback", use_container_width=True):
+                    if new_name and new_name != name:
+                        rename_chat(chat_id, new_name)
+                    st.rerun()
+                
+                # Xóa nút
+                st.markdown("---")
+                if st.button("🗑️ Xóa Cuộc Trò Chuyện", key=f"delete_{chat_id}_{idx}_fallback", use_container_width=True):
+                    delete_chat(chat_id)   
 
 # --- GIAO DIỆN CHÍNH---
 st.set_page_config(page_title="Chatbot Nuôi Tôm", page_icon="🦐", layout="wide")
