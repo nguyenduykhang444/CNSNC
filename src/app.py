@@ -4,22 +4,99 @@ import google.generativeai as genai
 import streamlit as st
 import re            
 import random        
-
-# --- QUẢN LÝ LỊCH SỬ ---
 import json
 from datetime import datetime
 
+# --- KHỞI TẠO CÁC BIẾN QUẢN LÝ ---
 HISTORY_FILE = "chat_history.json"
+SYSTEM_PROMPT_KEY = "NỘI DUNG THAM KHẢO"
 
-def load_chat_history():
+# --- CÁC HÀM QUẢN LÝ LỊCH SỬ CHAT VÀ LƯU TRỮ JSON ---
+
+def load_all_chats():
+    """Tải tất cả lịch sử chat từ file JSON."""
     if os.path.exists(HISTORY_FILE):
-        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
+        try:
+            with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                
+                # Chuyển đổi lịch sử dạng list parts (JSON) thành đối tượng genai.Chat
+                chats_recreated = {}
+                for chat_id, chat_data in data.items():
+                    # Đảm bảo parts là list of Part objects
+                    recreated_history = [
+                        genai.types.Content(role=msg['role'], parts=[genai.types.Part.from_text(msg['text'])])
+                        for msg in chat_data['history']
+                    ]
+                    
+                    chat_object = genai.GenerativeModel("gemini-2.5-flash").start_chat(history=recreated_history)
+                    chats_recreated[chat_id] = {
+                        "name": chat_data["name"],
+                        "chat_object": chat_object,
+                        "initial_greeting": chat_data.get("initial_greeting", "Chào bạn!")
+                    }
+                return chats_recreated
+        except Exception as e:
+            st.warning(f"⚠️ Lỗi khi đọc file lịch sử JSON: {e}. Khởi tạo lại lịch sử.")
+            return {}
     return {}
 
-def save_chat_history(data):
-    with open(HISTORY_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+def save_all_chats(all_chats):
+    """Lưu tất cả lịch sử chat vào file JSON."""
+    data_to_save = {}
+    for chat_id, chat_data in all_chats.items():
+        # Chuyển đổi đối tượng genai.Chat.history thành cấu trúc JSON đơn giản
+        simple_history = [
+            {"role": msg.role, "text": msg.parts[0].text}
+            for msg in chat_data["chat_object"].history
+        ]
+        
+        data_to_save[chat_id] = {
+            "name": chat_data["name"],
+            "history": simple_history,
+            "initial_greeting": chat_data.get("initial_greeting", "Chào bạn!")
+        }
+    
+    try:
+        with open(HISTORY_FILE, "w", encoding="utf-8") as f:
+            json.dump(data_to_save, f, ensure_ascii=False, indent=4)
+    except Exception as e:
+        st.error(f"Lỗi khi lưu lịch sử chat: {e}")
+
+def get_default_chat_name(history):
+    """Tạo tên chat mặc định dựa trên tin nhắn đầu tiên."""
+    # Bỏ qua tin nhắn khởi tạo SYSTEM_PROMPT
+    user_msgs = [m.parts[0].text for m in history if m.role == "user" and SYSTEM_PROMPT_KEY not in m.parts[0].text]
+    if user_msgs:
+        first_msg = user_msgs[0].strip()
+        return first_msg[:40] + "..." if len(first_msg) > 40 else first_msg
+    return f"Cuộc trò chuyện mới - {datetime.now().strftime('%H:%M')}"
+
+def rename_chat(chat_id, new_name):
+    """Đổi tên cuộc trò chuyện và lưu lại."""
+    if chat_id in st.session_state.all_chats and new_name:
+        st.session_state.all_chats[chat_id]["name"] = new_name.strip()
+        save_all_chats(st.session_state.all_chats)
+
+def delete_chat(chat_id):
+    """Xóa một cuộc trò chuyện và lưu lại."""
+    if chat_id in st.session_state.all_chats:
+        del st.session_state.all_chats[chat_id]
+        save_all_chats(st.session_state.all_chats)
+        
+        # Nếu xóa chat hiện tại, bắt đầu chat mới
+        if st.session_state.current_chat_id == chat_id or not st.session_state.all_chats:
+            st.session_state.current_chat_id = None # Đặt về None để kích hoạt new_chat_session
+            st.rerun()
+        else:
+             # Đảm bảo chat hiện tại là một chat còn lại
+            st.session_state.current_chat_id = list(st.session_state.all_chats.keys())[0]
+            st.rerun()
+            
+def select_chat(chat_id):
+    """Chọn một cuộc trò chuyện từ lịch sử."""
+    st.session_state.current_chat_id = chat_id
+    st.rerun()
 
 # --- CẤU HÌNH GEMINI ---
 dotenv.load_dotenv()
@@ -46,69 +123,82 @@ def load_data():
     data_dir = "data"
     data = ""
     if not os.path.exists(data_dir):
-        st.warning(f"⚠️ Thư mục '{data_dir}' chưa tồn tại. Chatbot sẽ chạy ở chế độ thông thường.")
-        return None
-    
+        return None        
     files = [f for f in os.listdir(data_dir) if f.endswith(".txt")]
     if not files:
-        st.warning("⚠️ Chưa có file .txt trong thư mục 'data/'. Chatbot sẽ chạy ở chế độ thông thường.")
-        return None
-    
+        return None  
     for file in files:
         try:
             with open(os.path.join(data_dir, file), "r", encoding="utf-8") as f:
                 data += f.read() + "\n\n"
         except Exception as e:
-            st.error(f"Lỗi khi đọc file {file}: {e}")
-            
+            st.error(f"Lỗi khi đọc file {file}: {e}")            
     return data.strip() if data else None
 
 # --- ĐẶT QUY TẮC CHO MODEL ---
-def initialize_chat(data):
+def new_chat_session():
     """Khởi tạo phiên chat mới với bối cảnh (system prompt) nếu có."""
+    chat_id = datetime.now().strftime("%Y%m%d%H%M%S") + str(random.randint(100, 999))
+    loaded_data = load_data()
     default_greeting = "Chào bạn! Hiện tại tôi chưa có dữ liệu về nuôi tôm. Tôi có thể giúp gì cho bạn (ở chế độ thông thường)?"
-    if data:
+    
+    if loaded_data:
         SYSTEM_PROMPT = f"""
         Bạn là một trợ lý AI chuyên gia về quy trình nuôi tôm thẻ chân trắng.
         Nhiệm vụ của bạn là trả lời các câu hỏi của người dùng CHỈ DỰA TRÊN NỘI DUNG SAU ĐÂY:
 
-        --- NỘI DUNG THAM KHẢO ---
-        {data}
+        --- {SYSTEM_PROMPT_KEY} ---
+        {loaded_data}
         --- KẾT THÚC NỘI DUNG ---
 
         QUY TẮC TUYỆT ĐỐI:
-        1. Chỉ trả lời dựa vào "NỘI DUNG THAM KHẢO" đã cung cấp.
+        1. Chỉ trả lời dựa vào "{SYSTEM_PROMPT_KEY}" đã cung cấp.
         2. Nếu câu hỏi không thể trả lời bằng nội dung trên, hãy nói: "Xin lỗi, tôi không tìm thấy thông tin này trong tài liệu."
         3. Không tự ý bịa đặt thông tin hoặc lấy kiến thức bên ngoài.
         4. Trả lời một cách ngắn gọn, chính xác và chuyên nghiệp.
         5. Khi mô tả về một bệnh mà có thẻ [IMAGE_PATH_DIR: ...], BẠN PHẢI GIỮ NGUYÊN thẻ đó trong câu trả lời.
         """
-        try:
-            chat = model.start_chat(history=[
-                {"role": "user", "parts": [SYSTEM_PROMPT]},
-                {"role": "model", "parts": ["Đã hiểu! Tôi là trợ lý chuyên về quy trình nuôi tôm. Tôi đã sẵn sàng trả lời các câu hỏi dựa trên tài liệu bạn cung cấp."]}
-            ])
-            st.session_state.context_loaded = True
-            return chat
-        except Exception as e:
-            st.error(f"Lỗi khi bắt đầu chat với model: {e}")
-            st.stop()
-    st.session_state.context_loaded = False
-    return model.start_chat(history=[
-        {"role": "user", "parts": ["Xin chào"]},
-        {"role": "model", "parts": [default_greeting]}
-    ])
+        initial_history = [
+             {"role": "user", "parts": [SYSTEM_PROMPT]},
+             {"role": "model", "parts": ["Đã hiểu! Tôi là trợ lý chuyên về quy trình nuôi tôm. Tôi đã sẵn sàng trả lời các câu hỏi dựa trên tài liệu bạn cung cấp."]}
+        ]
+        
+        initial_chat = model.start_chat(history=initial_history)
+        st.session_state.context_loaded = True
+        initial_name = f"Cuộc trò chuyện mới - {datetime.now().strftime('%H:%M')}"
+        initial_greeting = "Đã tải bối cảnh từ tài liệu. Hãy hỏi tôi về kỹ thuật nuôi tôm!"
+        
+    else:  
+        # Chế độ chung
+        initial_chat = model.start_chat(history=[])
+        st.session_state.context_loaded = False
+        initial_name = f"Chat chung - {datetime.now().strftime('%H:%M')}"
+        initial_greeting = default_greeting
+        
+    st.session_state.all_chats[chat_id] = {
+        "name": initial_name,
+        "chat_object": initial_chat,
+        "initial_greeting": initial_greeting
+    }
+    st.session_state.current_chat_id = chat_id
+    
+    # Lưu lại ngay sau khi tạo chat mới
+    save_all_chats(st.session_state.all_chats)
+    st.rerun()
 
-## --- HÀM XỬ LÝ VÀ HIỂN THỊ TIN NHẮN (VĂN BẢN + ẢNH) ---
+# --- HÀM XỬ LÝ VÀ HIỂN THỊ TIN NHẮN (VĂN BẢN + ẢNH) ---
 def display_message_with_images(text_content):
     """
     Hiển thị nội dung text, tìm thẻ ảnh, và hiển thị ảnh ngẫu nhiên nếu có.
     """
     image_tag_pattern = r"\[IMAGE_PATH_DIR:\s*(.*?)\s*\]"
     dir_paths = re.findall(image_tag_pattern, text_content)
-    clean_text = re.sub(image_tag_pattern, "", text_content).strip()
+    # Thay thế thẻ ảnh bằng chú thích trước khi hiển thị
+    clean_text = re.sub(image_tag_pattern, lambda m: f"*[Xem ảnh minh họa tại {m.group(1)}]*", text_content).strip()
+    
     if clean_text:
         st.markdown(clean_text)
+        
     for dir_path in dir_paths:
         if os.path.isdir(dir_path):
             try:
@@ -119,143 +209,154 @@ def display_message_with_images(text_content):
                 if image_files:
                     random_image = random.choice(image_files)
                     full_image_path = os.path.join(dir_path, random_image)
-                    st.image(full_image_path, width=200)
-                else:
-                    st.warning(f"⚠️ Thư mục '{dir_path}' được tìm thấy nhưng không chứa file ảnh nào.")
+                    st.image(full_image_path, width=200, caption=f"Ảnh minh họa từ thư mục: {dir_path}")  
             except Exception as e:
                 st.error(f"Lỗi khi truy cập hoặc đọc ảnh từ thư mục '{dir_path}': {e}")
-        else:
-            st.warning(f"⚠️ Chatbot đã trả về đường dẫn ảnh, nhưng thư mục '{dir_path}' không tồn tại trên máy chủ.")
 
-# --- GIAO DIỆN ---
+# --- GIAO DIỆN LỊCH SỬ CHAT TRONG SIDEBAR ---
+def render_history_sidebar():
+    st.sidebar.markdown("---")
+    st.sidebar.subheader("Lịch sử Trò chuyện")
+    
+    if not st.session_state.all_chats:
+        st.sidebar.caption("Chưa có cuộc trò chuyện nào được lưu.")
+        return
+
+    # Hiển thị tất cả các cuộc trò chuyện
+    for chat_id, chat_data in st.session_state.all_chats.items():
+        name = chat_data["name"]
+        
+        # Tạo giao diện list chat
+        col1, col2 = st.sidebar.columns([0.8, 0.2])
+        
+        with col1:
+            if st.button(name, key=f"select_{chat_id}", use_container_width=True, 
+                         type="primary" if chat_id == st.session_state.current_chat_id else "secondary"):
+                select_chat(chat_id)
+        
+        with col2:
+            # Tạo icon 3 chấm (ellipsis) cho tùy chọn
+            with st.popover("...", key=f"popover_{chat_id}"):
+                st.markdown(f"**{name}**")
+                
+                # --- NÚT ĐỔI TÊN ---
+                st.markdown("---")
+                new_name = st.text_input("Đổi tên cuộc trò chuyện:", value=name, key=f"rename_input_{chat_id}")
+                if st.button("💾 Lưu Tên Mới", key=f"rename_button_{chat_id}", use_container_width=True):
+                    if new_name and new_name != name:
+                        rename_chat(chat_id, new_name)
+                    st.rerun() 
+                
+                # --- NÚT CHIA SẺ (Mô phỏng) ---
+                st.markdown("---")
+                # Thêm một nút mô phỏng chức năng chia sẻ (thực tế cần logic phức tạp hơn)
+                share_link = f"Đường dẫn đến chat này:\n(Tính năng này cần triển khai backend)"
+                st.code(share_link)
+                
+                # --- NÚT XÓA ---
+                st.markdown("---")
+                if st.button("🗑️ Xóa Cuộc Trò Chuyện", key=f"delete_{chat_id}", use_container_width=True):
+                    delete_chat(chat_id)
+
+# --- GIAO DIỆN CHÍNH---
 st.set_page_config(page_title="Chatbot Nuôi Tôm", page_icon="🦐", layout="wide")
 st.title("🦐 Chatbot Hỏi-Đáp về Quy Trình Nuôi Tôm")
 
 # --- BIẾN LƯU LỊCH SỬ CHAT ---
-if "all_chats" not in st.session_state:
-    st.session_state.all_chats = load_chat_history()
+if 'all_chats' not in st.session_state:
+    st.session_state['all_chats'] = load_all_chats()
 
-if "current_chat_id" not in st.session_state:
-    st.session_state.current_chat_id = None
+if 'current_chat_id' not in st.session_state or st.session_state.current_chat_id is None:
+    if st.session_state.all_chats:
+        # Load chat mới nhất (hoặc chat đầu tiên)
+        st.session_state.current_chat_id = list(st.session_state.all_chats.keys())[0]
+    else:
+        # Nếu chưa có chat nào, tạo chat mới
+        new_chat_session()
+
+# Lấy chat object hiện tại
+current_chat_data = st.session_state.all_chats[st.session_state.current_chat_id]
+current_chat = current_chat_data["chat_object"]
 
 # --- THANH BÊN (SIDEBAR) ---
-# --- GIAO DIỆN THANH BÊN (SIDEBAR) QUẢN LÝ LỊCH SỬ TRÒ CHUYỆN ---
 with st.sidebar:
-    st.header("💬 Lịch sử trò chuyện")
-    all_chats = st.session_state.all_chats  # Lấy danh sách tất cả các hội thoại đã lưu
+    st.header("Thiết lập")
 
-    # --- HIỂN THỊ THÔNG BÁO NẾU CHƯA CÓ LỊCH SỬ ---
-    if not all_chats:
-        st.info("Chưa có lịch sử chat nào.")
-    else:
-        # --- DUYỆT QUA TỪNG HỘI THOẠI ĐÃ LƯU ---
-        for chat_id, chat_info in list(all_chats.items()):
-            col1, col2 = st.columns([8, 1])  # Chia cột để hiển thị tên & nút tùy chọn
+    # --- NÚT CUỘC TRÒ CHUYỆN MỚI ---
+    if st.button("✨ Cuộc Trò Chuyện Mới", use_container_width=True, help="Bắt đầu một phiên hỏi đáp hoàn toàn mới."):
+        new_chat_session()
+    
+    # --- NÚT TẢI LẠI NGỮ CẢNH (Rerun toàn bộ) ---
+    if st.button("🔄 Tải lại Ngữ cảnh (Rerun)", use_container_width=True, help="Xóa cache và khởi động lại toàn bộ ứng dụng."):
+        st.cache_data.clear()
+        st.rerun()
 
-            # --- MỞ LẠI MỘT HỘI THOẠI ---
-            with col1:
-                if st.button(chat_info["title"], key=f"open_{chat_id}"):
-                    st.session_state.current_chat_id = chat_id
-                    st.session_state.chat = chat_info["history"]
-                    st.rerun()
+    st.markdown("---")
+    st.info("💡 Lịch sử chat được lưu trong file `chat_history.json`.")
 
-            # --- MỞ MENU TÙY CHỌN (ĐỔI TÊN / XÓA) ---
-            with col2:
-                if st.button("⋮", key=f"menu_{chat_id}"):
-                    st.session_state.selected_chat = chat_id
-
-            # --- XỬ LÝ KHI NGƯỜI DÙNG CHỌN MENU ---
-            if st.session_state.get("selected_chat") == chat_id:
-                # Đổi tên hội thoại
-                new_name = st.text_input("Đổi tên:", value=chat_info["title"], key=f"rename_{chat_id}")
-                if st.button("Lưu", key=f"save_{chat_id}"):
-                    all_chats[chat_id]["title"] = new_name
-                    save_chat_history(all_chats)
-                    st.session_state.selected_chat = None
-                    st.rerun()
-
-                # Xóa hội thoại
-                if st.button("🗑️ Xóa", key=f"delete_{chat_id}"):
-                    del all_chats[chat_id]
-                    save_chat_history(all_chats)
-                    st.session_state.selected_chat = None
-                    st.rerun()
-
-                st.markdown("<span style='color:red;'>❗ Xóa là mất vĩnh viễn</span>", unsafe_allow_html=True)
-                st.divider()
-
+    # Hiển thị lịch sử chat
+    render_history_sidebar()
     # --- HƯỚNG DẪN THÊM DỮ LIỆU VÀ ẢNH ---
     st.markdown("---")
     st.info("💡 Thêm các file `.txt` vào thư mục `data/`.\n\n💡 Thêm ảnh vào thư mục `data/Images/` (hoặc đường dẫn bạn đã định nghĩa trong file .txt).")
 
-    # --- TẠO HỘI THOẠI MỚI ---
-    st.markdown("---")
-    if st.button("➕ Tạo hội thoại mới"):
-        new_id = str(datetime.now().timestamp())
-        all_chats[new_id] = {"title": f"Hội thoại {len(all_chats)+1}", "history": []}
-        save_chat_history(all_chats)
-        st.session_state.current_chat_id = new_id
-        st.session_state.chat = []
-        st.rerun()
 
-    # --- XÓA TOÀN BỘ LỊCH SỬ & TẢI LẠI NGỮ CẢNH ---
-    st.markdown("---")
-    if st.button("🗑️ Xóa lịch sử & Tải lại ngữ cảnh", use_container_width=True):
-        st.cache_data.clear()
-        st.rerun()
-# --- TẢI DỮ LIỆU VÀ KHỞI TẠO CHAT ---
-if "chat" not in st.session_state:
-    loaded_shrimp_data = load_data()
-    st.session_state.chat = initialize_chat(loaded_shrimp_data)
-if st.session_state.context_loaded:
-    st.status("Đã tải bối cảnh từ thư mục `data/`", state="complete")
+# --- KIỂM TRA TÌNH TRẠNG DỮ LIỆU ---
+is_context_loaded = SYSTEM_PROMPT_KEY in current_chat.history[0].parts[0].text if current_chat.history else False
+
+if is_context_loaded:
+    st.status("✅ Đã tải bối cảnh chuyên sâu từ thư mục `data/`", state="complete")
 else:
-    st.status("Không tìm thấy dữ liệu. Chatbot đang chạy ở chế độ chung.", state="error")
+    st.status("❌ Không tìm thấy dữ liệu. Chatbot đang chạy ở chế độ chung.", state="error")
 
 # --- KHUNG HIỂN THỊ LỊCH SỬ CHAT ---
-chat_container = st.container(height=400)
+chat_container = st.container(height=600, border=True)
 
-if st.session_state.current_chat_id and st.session_state.current_chat_id in st.session_state.all_chats:
-    for msg in st.session_state.all_chats[st.session_state.current_chat_id]["history"]:
-        role = "assistant" if msg["role"] == "assistant" else "user"
-        with chat_container.chat_message(role):
-            display_message_with_images(msg["text"])
+history = current_chat.history
 
-# --- KHUNG NHẬP LIỆU VÀ HIỂN THỊ TRẢ LỜI CÓ HÌNH ẢNH ---
+# Lọc bỏ tin nhắn System Prompt để không hiển thị ra giao diện
+history_to_display = [
+    turn for turn in history 
+    if not (turn.role == "user" and SYSTEM_PROMPT_KEY in turn.parts[0].text) and 
+       not (turn.role == "model" and turn.parts[0].text.startswith("Đã hiểu! Tôi là trợ lý chuyên về quy trình nuôi tôm."))
+]
+
+# Nếu là chat mới (chỉ có System Prompt), hiển thị lời chào
+if len(history_to_display) == 0:
+    with chat_container.chat_message("assistant"):
+        st.markdown(current_chat_data["initial_greeting"])
+
+# Hiển thị tin nhắn
+for turn in history_to_display:
+    role = "assistant" if turn.role == "model" else "user"
+    with chat_container.chat_message(role):
+        display_message_with_images(turn.parts[0].text)
+
+
+
+# --- KHUNG NHẬP LIỆU ---
 if prompt := st.chat_input("Hỏi về quy trình nuôi tôm..."):
-    # Hiển thị câu hỏi của người dùng
+    # Hiển thị tin nhắn User
     with chat_container.chat_message("user"):
         display_message_with_images(prompt)
 
+    # Gửi tin nhắn đến model
     try:
-        chat = st.session_state.chat
         with st.spinner("Bot đang suy nghĩ..."):
-            response = chat.send_message(prompt)  # Gửi câu hỏi tới Gemini model
+            response = current_chat.send_message(prompt)  
 
-        # Lấy nội dung trả lời (text + thẻ hình ảnh)
-        response_text = ""
-        if hasattr(response, "text"):
-            response_text = response.text
-        elif hasattr(response, "parts"):
-            # Trường hợp model trả về nhiều phần
-            response_text = " ".join([part.text for part in response.parts if hasattr(part, "text")])
-
-        # Hiển thị trả lời và hình ảnh
-        if response_text:
-            # Tách text và thẻ ảnh ra hiển thị
-            display_message_with_images(response_text)
-        else:
-            st.warning("🤖 Bot trả lời trống.")
-
-        # --- Lưu lịch sử chat ---
-        if st.session_state.current_chat_id:
-            cid = st.session_state.current_chat_id
-            if cid not in st.session_state.all_chats:
-                st.session_state.all_chats[cid] = {"title": f"Hội thoại {len(st.session_state.all_chats)+1}", "history": []}
-
-            st.session_state.all_chats[cid]["history"].append({"role": "user", "text": prompt})
-            st.session_state.all_chats[cid]["history"].append({"role": "assistant", "text": response_text})
-            save_chat_history(st.session_state.all_chats)
+        # Hiển thị tin nhắn Model
+        with chat_container.chat_message("assistant"):
+            display_message_with_images(response.text)
+    
+        # Cập nhật tên chat nếu là tin nhắn đầu tiên (sau khi system prompt)
+        # Sử dụng len(history) để kiểm tra số lượng tin nhắn đã gửi đi
+        if len(history) == (3 if is_context_loaded else 1): 
+            new_name = get_default_chat_name(current_chat.history)
+            rename_chat(st.session_state.current_chat_id, new_name)
+            
+        # LƯU LẠI LỊCH SỬ SAU MỖI LẦN TRÒ CHUYỆN
+        save_all_chats(st.session_state.all_chats)
 
     except Exception as e:
         st.error(f"❌ Lỗi khi gửi tin nhắn: {e}")
