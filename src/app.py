@@ -251,7 +251,7 @@ def render_history_sidebar():
                         placeholder="✎ Đổi tên"
                     )
                     # --- NÚT LƯU TÊN ---
-                    col_save, col_delete = st.columns([0.6, 0.6])
+                    col_save, col_delete = st.columns([0.9, 0.9])
                     with col_save:
                         if st.button("Lưu", key=f"rename_button_{chat_id}_{idx}", use_container_width=True):
                             if new_name and new_name != name:
@@ -271,7 +271,7 @@ def render_history_sidebar():
                     key=f"rename_input_fallback_{chat_id}_{idx}",
                     placeholder="✎Đổi tên"
                 )
-                col_save, col_delete = st.columns([0.6, 0.6])
+                col_save, col_delete = st.columns([0.9, 0.9])
                 # --- NÚT LƯU TÊN ---
                 with col_save:
                     if st.button("Lưu", key=f"rename_button_fallback_{chat_id}_{idx}"):
