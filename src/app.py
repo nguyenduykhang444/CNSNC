@@ -233,7 +233,7 @@ def display_message_with_images(text_content):
 # --- GIAO DIỆN LỊCH SỬ CHAT TRONG SIDEBAR ---
 def render_history_sidebar():
     st.sidebar.markdown("---")
-    st.sidebar.subheader("Đoạn chat")
+    st.sidebar.subheader("Đoạn chat") # Thêm icon
 
     all_chats = st.session_state.get("all_chats", {})
     if not all_chats:
@@ -250,85 +250,66 @@ def render_history_sidebar():
         name = chat_data.get("name", f"Chat {idx+1}")
 
         # tạo 2 cột: tên chọn và nút 3 chấm
-        col1, col2 = st.sidebar.columns([0.75, 0.25])
+        # Tăng tỉ lệ col1 để tên dài dễ đọc hơn
+        col1, col2 = st.sidebar.columns([0.80, 0.20]) 
 
         # Cột chọn chat (toàn bộ nút hiển thị tên) 
         with col1:
             # key có idx để tránh trùng
-            if st.button(name, key=f"select_{chat_id}_{idx}", use_container_width=True):
+            if st.button(name, key=f"select_{chat_id}_{idx}", use_container_width=True, help="Click để mở đoạn chat này"):
                 st.session_state["current_chat_id"] = chat_id
 
         # Cột 3 chấm (expander chứa đổi tên + xóa) 
         exp_key = f"expander_{chat_id}_{idx}"
         with col2:
-            
-            try:
-                # dùng expander nhỏ mở tuỳ chọn
-                with st.expander("⋮", expanded=False, key=exp_key):
-                    st.markdown(f"**{name}**")
-                    st.markdown("---")
+            # Dùng icon/emoji rõ ràng hơn cho expander
+            with st.expander("⚙️", expanded=False, key=exp_key): 
+                # Không lặp lại tên chat, chỉ dùng để chứa hành động
+                st.caption(f"Tùy chọn cho: **{name}**") # Tên chat làm tiêu đề hướng dẫn
+                st.markdown("---")
 
-                    # input đổi tên (dùng session_state để lưu tạm)
-                    input_key = f"rename_input_{chat_id}_{idx}"
-                    if input_key not in st.session_state:
-                        st.session_state[input_key] = name
-
-                    new_name = st.text_input(
-                        "", value=st.session_state[input_key],
-                        key=input_key,
-                        placeholder="✎ Đổi tên"
-                    )
-
-                    col_save, col_delete = st.columns([0.6, 0.4])
-                    with col_save:
-                        if st.button("Lưu", key=f"rename_button_{chat_id}_{idx}", use_container_width=True):
-                            new_name_stripped = (new_name or "").strip()
-                            if new_name_stripped and new_name_stripped != name:
-                                # gọi hàm rename_chat nếu có, ngược lại cập nhật trực tiếp
-                                try:
-                                    rename_chat(chat_id, new_name_stripped)
-                                except Exception:
-                                    st.session_state["all_chats"][chat_id]["name"] = new_name_stripped
-                                # cập nhật session_state input để phản ánh tên mới
-                                st.session_state[input_key] = new_name_stripped
-
-                    with col_delete:
-                        if st.button("Xóa", key=f"delete_{chat_id}_{idx}", use_container_width=True):
-                            chats_to_remove.append(chat_id)
-            
-            except Exception:
-                # fallback: nếu expander lỗi, hiển thị thay thế đơn giản
-                st.markdown(f"**{name}**")
-                input_key = f"rename_input_fb_{chat_id}_{idx}"
+                # input đổi tên
+                input_key = f"rename_input_{chat_id}_{idx}"
                 if input_key not in st.session_state:
                     st.session_state[input_key] = name
-                new_name = st.text_input("", value=st.session_state[input_key], key=input_key, placeholder="✎ Đổi tên")
-                if st.button("Lưu (fb)", key=f"rename_button_fb_{chat_id}_{idx}"):
-                    new_name_stripped = (new_name or "").strip()
-                    if new_name_stripped and new_name_stripped != name:
-                        try:
-                            rename_chat(chat_id, new_name_stripped)
-                        except Exception:
-                            st.session_state["all_chats"][chat_id]["name"] = new_name_stripped
-                        st.session_state[input_key] = new_name_stripped
-                if st.button("Xóa (fb)", key=f"delete_fb_{chat_id}_{idx}"):
-                    chats_to_remove.append(chat_id)
+
+                new_name = st.text_input(
+                    "", value=st.session_state[input_key],
+                    key=input_key,
+                    label_visibility="collapsed", # Ẩn label mặc định
+                    placeholder="✎ Đổi tên mới" # Placeholder rõ ràng hơn
+                )
+
+                col_save, col_delete = st.columns([0.6, 0.4])
+                with col_save:
+                    if st.button("Lưu", key=f"rename_button_{chat_id}_{idx}", use_container_width=True): # Thêm icon
+                        new_name_stripped = (new_name or "").strip()
+                        if new_name_stripped and new_name_stripped != name:
+                            # gọi hàm rename_chat nếu có, ngược lại cập nhật trực tiếp
+                            try:
+                                rename_chat(chat_id, new_name_stripped)
+                            except NameError: # Thay NameError cho Exception chung
+                                st.session_state["all_chats"][chat_id]["name"] = new_name_stripped
+                            # cập nhật session_state input để phản ánh tên mới
+                            st.session_state[input_key] = new_name_stripped
+
+                with col_delete:
+                    if st.button("Xóa", key=f"delete_{chat_id}_{idx}", use_container_width=True): # Thêm icon
+                        chats_to_remove.append(chat_id)
 
     # Xử lý xóa sau khi duyệt xong vòng lặp (tránh chỉnh sửa dict khi đang iterate)
     for chat_id in chats_to_remove:
         try:
-            delete_chat(chat_id)
-        except Exception:
+            # Nếu hàm delete_chat tồn tại
+            delete_chat(chat_id) 
+        except NameError: # Thay NameError cho Exception chung
             # fallback: xóa trực tiếp trong session_state
             if chat_id in st.session_state.get("all_chats", {}):
                 del st.session_state["all_chats"][chat_id]
         # nếu xóa chat đang mở, bỏ current_chat_id
         if st.session_state.get("current_chat_id") == chat_id:
             st.session_state["current_chat_id"] = None
-  
-
-         
-
+        
 # --- GIAO DIỆN CHÍNH---
 st.set_page_config(page_title="Chatbot Nuôi Tôm", page_icon="🦐", layout="wide")
 st.title("🦐 Chatbot Hỏi-Đáp về Quy Trình Nuôi Tôm")
