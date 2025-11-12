@@ -259,8 +259,7 @@ def render_history_sidebar():
             # Dấu 3 chấm mở khung tùy chọn
             try:
                 with st.expander("⋮", expanded=False, key=exp_key):
-                    st.markdown(f"**{name}**")
-                    st.markdown("---")
+                    
                 
                     # --- NÚT ĐỔI TÊN ---
                     new_name = st.text_input(
@@ -278,7 +277,7 @@ def render_history_sidebar():
                 
                     # --- NÚT XÓA ---
                     with col_delete:
-                        if st.button("☒ Xóa", key=f"delete_{chat_id}_{idx}", use_container_width=True):
+                        if st.button("Xóa", key=f"delete_{chat_id}_{idx}", use_container_width=True):
                             chats_to_remove.append(chat_id)
 
             except Exception:
@@ -299,12 +298,12 @@ def render_history_sidebar():
                 
                 # --- NÚT XÓA ---
                 with col_delete:
-                    if st.button("☒ Xóa", key=f"delete_{chat_id}_{idx}"):
+                    if st.button("Xóa", key=f"delete_{chat_id}_{idx}"):
                         chats_to_remove.append(chat_id)   
     # Xóa các chat đã đánh dấu
     for chat_id in chats_to_remove:
         delete_chat(chat_id) 
-        
+
 def new_func(name):
     st.markdown(f"**{name}**")    
         
