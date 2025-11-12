@@ -166,8 +166,7 @@ def new_chat_session():
         initial_chat = model.start_chat(history=initial_history)
         st.session_state.context_loaded = True
         initial_name = f"Cuộc trò chuyện mới - {datetime.now().strftime('%H:%M')}"
-        initial_greeting = "Đã tải bối cảnh từ tài liệu. Hãy hỏi tôi về kỹ thuật nuôi tôm!"
-        
+        initial_greeting = "Chào bạn! Bạn cần hỗ trợ gì hôm nay?"
     else:  
         # Chế độ chung
         initial_chat = model.start_chat(history=[])
@@ -218,77 +217,76 @@ def render_history_sidebar():
     st.sidebar.markdown("---")
     st.sidebar.subheader("Đoạn chat")
     
-    if not st.session_state.all_chats:
+    if not st.session_state.get("all_chats"):
         st.sidebar.caption("Chưa có cuộc trò chuyện nào được lưu.")
         return
 
     chats_to_remove = []
+
+    # Khởi tạo dict theo dõi chế độ edit tên
+    if "edit_name" not in st.session_state:
+        st.session_state["edit_name"] = {}
+
     # Hiển thị tất cả các cuộc trò chuyện
     for idx, (chat_id, chat_data) in enumerate(st.session_state.all_chats.items()):
-        name = chat_data["name"]
-        exp_key = f"expander_{chat_id}_{idx}"
-        # Tạo giao diện list chat
-        col1, col2 = st.sidebar.columns([0.6, 0.4])
+        name = chat_data("name", f"chat {idx+1}")
         
-        with col1:
-            if st.button(name, key=f"select_{chat_id}", 
-                        type="primary" if chat_id == st.session_state.current_chat_id else "secondary",
-                        use_container_width=True):
-                select_chat(chat_id)
+        # --- Inline edit tên ---
+        edit_key = f"edit_{chat_id}"
+        if st.session_state["edit_name"].get(chat_id, False):
         
-        
-        with col2:
-            # Dấu 3 chấm mở khung tùy chọn
-            try:
-                with st.expander("⋮", expanded=False, key=exp_key):
-                    st.markdown(f"**{name}**")
-                    st.markdown("---")
-                
-                    # --- NÚT ĐỔI TÊN ---
-                    new_name = st.text_input(
-                        "", value=name,
-                        key=f"rename_input_{chat_id}_{idx}",
-                        placeholder="✎ Đổi tên"
-                    )
-                    # --- NÚT LƯU TÊN ---
-                    col_save, col_delete = st.columns([0.9, 0.9])
-                    with col_save:
-                        if st.button("Lưu", key=f"rename_button_{chat_id}_{idx}", use_container_width=True):
-                            if new_name and new_name != name:
-                                rename_chat(chat_id, new_name)
-                                st.experimental_rerun()                                        
-                
-                    # --- NÚT XÓA ---
+            # Chế độ edit tên trực tiếp
+            def save_name(chat_id=chat_id):
+                new_name = st.session_state[f"input_{chat_id}"].strip()
+                if new_name and new_name != st.session_state.all_chats[chat_id]["name"]:
+                    rename_chat(chat_id, new_name)
+                st.session_state["edit_name"][chat_id] = False
+                st.rerun()
+            
+            st.text_input(
+                "",
+                key=f"input_{chat_id}",
+                value=name,
+                on_change=save_name
+            )
+        else:
+            # Hiển thị tên chat + nút ⋮ mở expander
+            col1, col2 = st.sidebar.columns([0.75, 0.25])
+            with col1:
+                if st.button(
+                    name,
+                    key=f"select_{chat_id}",
+                    type="primary" if chat_id == st.session_state.get("current_chat_id") else "secondary",
+                    use_container_width=True
+                ):
+                    select_chat(chat_id)
+            with col2:
+                try:
+                    with st.expander("⋮", expanded=False, key=f"exp_{chat_id}_{idx}"):
+                        # Hai nút trên cùng 1 hàng
+                        col_edit, col_delete = st.columns([1,1])
+                        with col_edit:
+                            if st.button("✎ Đổi tên", key=f"edit_{chat_id}"):
+                                st.session_state["edit_name"][chat_id] = True
+                                st.rerun()
+                        with col_delete:
+                            if st.button("🗑 Xóa", key=f"delete_{chat_id}"):
+                                chats_to_remove.append(chat_id)
+                except Exception:
+                    # fallback cho Streamlit cũ
+                    col_edit, col_delete = st.columns([1,1])
+                    with col_edit:
+                        if st.button("✎ Đổi tên", key=f"edit_fallback_{chat_id}"):
+                            st.session_state["edit_name"][chat_id] = True
+                            st.rerun()
                     with col_delete:
-                        if st.button("☒ Xóa", key=f"delete_{chat_id}_{idx}", use_container_width=True):
+                        if st.button("🗑 Xóa", key=f"delete_fallback_{chat_id}"):
                             chats_to_remove.append(chat_id)
-
-            except Exception:
-                # Fallback cho phiên bản Streamlit không hỗ trợ 'key'
-                new_func(name)
-                new_name = st.text_input(
-                    "", value=name,
-                    key=f"rename_input_fallback_{chat_id}_{idx}",
-                    placeholder="✎Đổi tên"
-                )
-                col_save, col_delete = st.columns([0.5, 0.5])
-                # --- NÚT LƯU TÊN ---
-                with col_save:
-                    if st.button("Lưu", key=f"rename_button_fallback_{chat_id}_{idx}"):
-                        if new_name and new_name != name:
-                            rename_chat(chat_id, new_name)
-                            st.experimental_rerun()
-                
-                # --- NÚT XÓA ---
-                with col_delete:
-                    if st.button("☒ Xóa", key=f"delete_{chat_id}_{idx}"):
-                        chats_to_remove.append(chat_id)   
-    # Xóa các chat đã đánh dấu
+    # Xóa chat đã chọn
     for chat_id in chats_to_remove:
-        delete_chat(chat_id) 
-
-def new_func(name):
-    st.markdown(f"**{name}**")               
+        delete_chat(chat_id)
+        st.rerun()
+         
 
 # --- GIAO DIỆN CHÍNH---
 st.set_page_config(page_title="Chatbot Nuôi Tôm", page_icon="🦐", layout="wide")
@@ -324,8 +322,7 @@ with st.sidebar:
         st.cache_data.clear()
         st.rerun()
 
-    st.markdown("---")
-    st.info("💡 Lịch sử chat được lưu trong file `chat_history.json`.")
+    
 
     # Hiển thị lịch sử chat
     render_history_sidebar()
