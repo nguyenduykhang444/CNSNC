@@ -72,7 +72,7 @@ def initialize_chat(data):
         try:
             chat = model.start_chat(history=[
                 {"role": "user", "parts": [SYSTEM_PROMPT]},
-                {"role": "model", "parts": ["Đã hiểu! Tôi là trợ lý chuyên về quy trình nuôi tôm. Tôi đã sẵn sàng trả lời các câu hỏi dựa trên tài liệu bạn cung cấp."]}
+                {"role": "model", "parts": ["Xin chào! Bạn cần hỗ trợ gì hôm nay?"]}
             ])
             st.session_state.context_loaded = True
             return chat
