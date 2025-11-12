@@ -8,38 +8,56 @@ import json
 from datetime import datetime
 
 # --- KHỞI TẠO CÁC BIẾN QUẢN LÝ ---
-HISTORY_FILE = "chat_history.json"
+HISTORY_FILE = "../chat_history.json"  # dùng file ngoài src/
 SYSTEM_PROMPT_KEY = "NỘI DUNG THAM KHẢO"
 
 # --- CÁC HÀM QUẢN LÝ LỊCH SỬ CHAT VÀ LƯU TRỮ JSON ---
 
 def load_all_chats():
-    """Tải tất cả lịch sử chat từ file JSON."""
-    if os.path.exists(HISTORY_FILE):
-        try:
-            with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                
-                # Chuyển đổi lịch sử dạng list parts (JSON) thành đối tượng genai.Chat
-                chats_recreated = {}
-                for chat_id, chat_data in data.items():
-                    # Đảm bảo parts là list of Part objects
-                    recreated_history = [
-                        genai.types.Content(role=msg['role'], parts=[genai.types.Part.from_text(msg['text'])])
-                        for msg in chat_data['history']
-                    ]
-                    
-                    chat_object = genai.GenerativeModel("gemini-2.5-flash").start_chat(history=recreated_history)
-                    chats_recreated[chat_id] = {
-                        "name": chat_data["name"],
-                        "chat_object": chat_object,
-                        "initial_greeting": chat_data.get("initial_greeting", "Chào bạn!")
-                    }
-                return chats_recreated
-        except Exception as e:
-            st.warning(f"⚠️ Lỗi khi đọc file lịch sử JSON: {e}. Khởi tạo lại lịch sử.")
+    """Tải tất cả lịch sử chat từ file JSON (an toàn)."""
+    # Nếu file chưa tồn tại, tạo file rỗng 
+    if not os.path.exists(HISTORY_FILE):
+        with open(HISTORY_FILE, "w", encoding="utf-8") as f:
+            json.dump({}, f)
+        return {}
+
+    try:
+        # Nếu file rỗng, trả về dict rỗng 
+        if os.path.getsize(HISTORY_FILE) == 0:
             return {}
-    return {}
+
+        # Đọc JSON
+        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        #  Nếu dữ liệu không phải dict, reset 
+        if not isinstance(data, dict):
+            st.warning("⚠️ Dữ liệu JSON không đúng định dạng, đã reset.")
+            return {}
+
+        chats = {}
+        for chat_id, chat_data in data.items():
+            history = []
+            for msg in chat_data.get("history", []):
+                history.append(
+                    genai.types.Content(
+                        role=msg.get("role", "user"),
+                        parts=[genai.types.Part.from_text(msg.get("text", ""))]
+                    )
+                )
+
+            chat_object = genai.GenerativeModel("gemini-2.5-flash").start_chat(history=history)
+            chats[chat_id] = {
+                "name": chat_data.get("name", "Cuộc trò chuyện mới"),
+                "chat_object": chat_object,
+                "initial_greeting": chat_data.get("initial_greeting", "Chào bạn!")
+            }
+
+        return chats
+
+    except Exception as e:
+        st.warning(f"⚠️ Lỗi khi đọc JSON, đã reset dữ liệu: {e}")
+        return {}
 
 def save_all_chats(all_chats):
     """Lưu tất cả lịch sử chat vào file JSON."""
@@ -216,79 +234,98 @@ def display_message_with_images(text_content):
 def render_history_sidebar():
     st.sidebar.markdown("---")
     st.sidebar.subheader("Đoạn chat")
-    
-    if not st.session_state.all_chats:
+
+    all_chats = st.session_state.get("all_chats", {})
+    if not all_chats:
         st.sidebar.caption("Chưa có cuộc trò chuyện nào được lưu.")
         return
 
     chats_to_remove = []
 
-    # Hiển thị tất cả các cuộc trò chuyện
-    for idx, (chat_id, chat_data) in enumerate(st.session_state.all_chats.items()):
-        name = chat_data["name"]
-        exp_key = f"expander_{chat_id}_{idx}"
-        # Tạo giao diện list chat
-        col1, col2 = st.sidebar.columns([0.7, 0.3])
-        
+    # đảm bảo có dict lưu trạng thái edit (nếu cần)
+    if "rename_open" not in st.session_state:
+        st.session_state["rename_open"] = {}
+
+    for idx, (chat_id, chat_data) in enumerate(list(all_chats.items())):
+        name = chat_data.get("name", f"Chat {idx+1}")
+
+        # tạo 2 cột: tên chọn và nút 3 chấm
+        col1, col2 = st.sidebar.columns([0.75, 0.25])
+
+        # Cột chọn chat (toàn bộ nút hiển thị tên) 
         with col1:
-            if st.button(name, key=f"select_{chat_id}", 
-                        type="primary" if chat_id == st.session_state.current_chat_id else "secondary",
-                        use_container_width=True):
-                select_chat(chat_id)
-        
-        
+            # key có idx để tránh trùng
+            if st.button(name, key=f"select_{chat_id}_{idx}", use_container_width=True):
+                st.session_state["current_chat_id"] = chat_id
+
+        # Cột 3 chấm (expander chứa đổi tên + xóa) 
+        exp_key = f"expander_{chat_id}_{idx}"
         with col2:
-            # Dấu 3 chấm mở khung tùy chọn
+            
             try:
+                # dùng expander nhỏ mở tuỳ chọn
                 with st.expander("⋮", expanded=False, key=exp_key):
                     st.markdown(f"**{name}**")
                     st.markdown("---")
-                
-                    # --- NÚT ĐỔI TÊN ---
+
+                    # input đổi tên (dùng session_state để lưu tạm)
+                    input_key = f"rename_input_{chat_id}_{idx}"
+                    if input_key not in st.session_state:
+                        st.session_state[input_key] = name
+
                     new_name = st.text_input(
-                        "", value=name,
-                        key=f"rename_input_{chat_id}_{idx}",
+                        "", value=st.session_state[input_key],
+                        key=input_key,
                         placeholder="✎ Đổi tên"
                     )
-                    # --- NÚT LƯU TÊN ---
-                    col_save, col_delete = st.columns([0.9, 0.9])
+
+                    col_save, col_delete = st.columns([0.6, 0.4])
                     with col_save:
                         if st.button("Lưu", key=f"rename_button_{chat_id}_{idx}", use_container_width=True):
-                            if new_name and new_name != name:
-                                rename_chat(chat_id, new_name)
-                                st.rerun()                                        
-                
-                    # --- NÚT XÓA ---
+                            new_name_stripped = (new_name or "").strip()
+                            if new_name_stripped and new_name_stripped != name:
+                                # gọi hàm rename_chat nếu có, ngược lại cập nhật trực tiếp
+                                try:
+                                    rename_chat(chat_id, new_name_stripped)
+                                except Exception:
+                                    st.session_state["all_chats"][chat_id]["name"] = new_name_stripped
+                                # cập nhật session_state input để phản ánh tên mới
+                                st.session_state[input_key] = new_name_stripped
+
                     with col_delete:
-                        if st.button("☒ Xóa", key=f"delete_{chat_id}_{idx}", use_container_width=True):
+                        if st.button("Xóa", key=f"delete_{chat_id}_{idx}", use_container_width=True):
                             chats_to_remove.append(chat_id)
-
+            
             except Exception:
-                # Fallback cho phiên bản Streamlit không hỗ trợ 'key'
-                new_func(name)
-                new_name = st.text_input(
-                    "", value=name,
-                    key=f"rename_input_fallback_{chat_id}_{idx}",
-                    placeholder="✎Đổi tên"
-                )
-                col_save, col_delete = st.columns([0.9, 0.9])
-                # --- NÚT LƯU TÊN ---
-                with col_save:
-                    if st.button("Lưu", key=f"rename_button_fallback_{chat_id}_{idx}"):
-                        if new_name and new_name != name:
-                            rename_chat(chat_id, new_name)
-                            st.rerun()
-                
-                # --- NÚT XÓA ---
-                with col_delete:
-                    if st.button("☒ Xóa", key=f"delete_{chat_id}_{idx}"):
-                        chats_to_remove.append(chat_id)   
-    # Xóa các chat đã đánh dấu
-    for chat_id in chats_to_remove:
-        delete_chat(chat_id) 
+                # fallback: nếu expander lỗi, hiển thị thay thế đơn giản
+                st.markdown(f"**{name}**")
+                input_key = f"rename_input_fb_{chat_id}_{idx}"
+                if input_key not in st.session_state:
+                    st.session_state[input_key] = name
+                new_name = st.text_input("", value=st.session_state[input_key], key=input_key, placeholder="✎ Đổi tên")
+                if st.button("Lưu (fb)", key=f"rename_button_fb_{chat_id}_{idx}"):
+                    new_name_stripped = (new_name or "").strip()
+                    if new_name_stripped and new_name_stripped != name:
+                        try:
+                            rename_chat(chat_id, new_name_stripped)
+                        except Exception:
+                            st.session_state["all_chats"][chat_id]["name"] = new_name_stripped
+                        st.session_state[input_key] = new_name_stripped
+                if st.button("Xóa (fb)", key=f"delete_fb_{chat_id}_{idx}"):
+                    chats_to_remove.append(chat_id)
 
-def new_func(name):
-    st.markdown(f"**{name}**")    
+    # Xử lý xóa sau khi duyệt xong vòng lặp (tránh chỉnh sửa dict khi đang iterate)
+    for chat_id in chats_to_remove:
+        try:
+            delete_chat(chat_id)
+        except Exception:
+            # fallback: xóa trực tiếp trong session_state
+            if chat_id in st.session_state.get("all_chats", {}):
+                del st.session_state["all_chats"][chat_id]
+        # nếu xóa chat đang mở, bỏ current_chat_id
+        if st.session_state.get("current_chat_id") == chat_id:
+            st.session_state["current_chat_id"] = None
+  
 
          
 
