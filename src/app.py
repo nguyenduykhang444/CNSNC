@@ -228,7 +228,7 @@ def render_history_sidebar():
         name = chat_data["name"]
         exp_key = f"expander_{chat_id}_{idx}"
         # Tạo giao diện list chat
-        col1, col2 = st.sidebar.columns([0.5, 0.3])
+        col1, col2 = st.sidebar.columns([0.6, 0.3])
         
         with col1:
             if st.button(name, key=f"select_{chat_id}", 
