@@ -304,7 +304,9 @@ def render_history_sidebar():
     # Xóa các chat đã đánh dấu
     for chat_id in chats_to_remove:
         delete_chat(chat_id) 
-    
+        
+def new_func(name):
+    st.markdown(f"**{name}**")    
         
 # --- GIAO DIỆN CHÍNH---
 st.set_page_config(page_title="Chatbot Nuôi Tôm", page_icon="🦐", layout="wide")
