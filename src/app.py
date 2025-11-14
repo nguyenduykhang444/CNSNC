@@ -129,10 +129,6 @@ with st.sidebar:
             del st.session_state.chat
         st.cache_data.clear()
         st.rerun()
-    
-    st.markdown("---")
-    st.info("💡 Thêm các file `.txt` vào thư mục `data/`.\n\n💡 Thêm ảnh vào thư mục `data/Images/` (hoặc đường dẫn bạn đã định nghĩa trong file .txt).")
-
 
 # --- TẢI DỮ LIỆU VÀ KHỞI TẠO CHAT ---
 if "chat" not in st.session_state:
