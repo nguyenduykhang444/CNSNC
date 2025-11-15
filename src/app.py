@@ -56,17 +56,17 @@ def initialize_chat(data):
     if data:
         SYSTEM_PROMPT = f"""
         Bạn là một trợ lý AI chuyên gia về quy trình nuôi tôm thẻ chân trắng.
-        Nhiệm vụ của bạn là trả lời các câu hỏi của người dùng CHỈ DỰA TRÊN NỘI DUNG SAU ĐÂY:
+        Nhiệm vụ của bạn là trả lời các câu hỏi của người dùng dựa trên các quy tắc sau:
 
-        --- NỘI DUNG THAM KHẢO ---
+        --- NỘI DUNG THAM KHẢO (DÙNG CHO HẦU HẾT CÂU HỎI) ---
         {data}
         --- KẾT THÚC NỘI DUNG ---
 
         QUY TẮC TUYỆT ĐỐI:
-        1. Chỉ trả lời dựa vào "NỘI DUNG THAM KHẢO"đã cung cấp.
-        2. Nếu câu hỏi không thể trả lời bằng nội dung trên, hãy nói: "Xin lỗi, tôi không tìm thấy thông tin này trong tài liệu."
-        3. Không tự ý bịa đặt thông tin hoặc lấy kiến thức bên ngoài.
-        4. Trả lời một cách ngắn gọn, chính xác và chuyên nghiệp.
+        1. [NGOẠI LỆ ƯU TIÊN]: Nếu người dùng hỏi về "giá tôm" hoặc "thị trường tôm", bạn được phép sử dụng kiến thức bên ngoài (kiến thức chung của bạn) để trả lời. Đây là trường hợp DUY NHẤT bạn được phép dùng kiến thức ngoài.
+        2. [QUY TẮC CHÍNH]: Đối với TẤT CẢ các câu hỏi khác (không phải giá tôm), bạn CHỈ được trả lời dựa vào "NỘI DUNG THAM KHẢO" đã cung cấp.
+        3. Nếu một câu hỏi (không phải giá tôm) không thể trả lời bằng nội dung trên, hãy nói: "Xin lỗi, tôi không tìm thấy thông tin này trong tài liệu."
+        4. Không tự ý bịa đặt thông tin.
         5. Khi mô tả về một bệnh mà có thẻ [IMAGE_PATH_DIR: ...], BẠN PHẢI GIỮ NGUYÊN thẻ đó trong câu trả lời.
         """
         try:
@@ -84,6 +84,7 @@ def initialize_chat(data):
         {"role": "user", "parts": ["Xin chào"]},
         {"role": "model", "parts": [default_greeting]}
     ])
+
 
 # --- HÀM XỬ LÝ VÀ HIỂN THỊ TIN NHẮN (VĂN BẢN + ẢNH) ---
 def display_message_with_images(text_content):
@@ -120,7 +121,6 @@ st.set_page_config(page_title="Chatbot Nuôi Tôm", page_icon="🦐", layout="wi
 st.title("🦐 Chatbot Hỏi-Đáp về Quy Trình Nuôi Tôm")
 
 
-
 # --- THANH BÊN (SIDEBAR) ---
 with st.sidebar:
     st.header("Thiết lập")
@@ -139,6 +139,7 @@ if st.session_state.context_loaded:
 else:
     st.status("Không tìm thấy dữ liệu. Chatbot đang chạy ở chế độ chung.", state="error")
 
+
 # --- KHUNG HIỂN THỊ LỊCH SỬ CHAT ---
 chat_container = st.container(height=400)
 for turn in st.session_state.chat.history:
@@ -148,7 +149,6 @@ for turn in st.session_state.chat.history:
     role = "assistant" if turn.role == "model" else "user"
     with chat_container.chat_message(role):
         display_message_with_images(turn.parts[0].text)
-
 
 
 # --- KHUNG NHẬP LIỆU ---
