@@ -5,7 +5,11 @@ Mô tả: Tôm khỏe mạnh, có màu sắc tươi sáng, vỏ bóng, các ph�
 [IMAGE_PATH_DIR: data/Images/Healthy/]
 
 2. BG (Bệnh Đen Mang)
-Mô tả: Là tình trạng mang của tôm chuyển sang màu nâu hoặc đen. Nguyên nhân thường do môi trường nước ao bẩn, đáy ao tích tụ nhiều chất hữu cơ, hoặc do nhiễm nấm, vi khuẩn. Bệnh làm giảm khả năng hô hấp của tôm, khiến tôm yếu, chậm lớn, và nổi đầu khi thiếu oxy.
+Mô tả: Là tình trạng mang của 
+tôm chuyển sang màu nâu hoặc đen.
+
+Nguyên nhân thường do môi trường nước ao bẩn, đáy ao tích tụ nhiều chất hữu cơ, hoặc do nhiễm nấm, vi khuẩn. 
+Bệnh làm giảm khả năng hô hấp của tôm, khiến tôm yếu, chậm lớn, và nổi đầu khi thiếu oxy.
 [IMAGE_PATH_DIR: data/Images/BG/]
 
 3. WSSV (Bệnh Đốm Trắng)
