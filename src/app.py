@@ -22,6 +22,7 @@ except Exception as e:
     st.error(f"Lỗi khi cấu hình Gemini: {e}")
     st.stop()
 
+<<<<<<< HEAD
 
 # --- BIẾN SESSION ---
 if "saved_chats" not in st.session_state:
@@ -34,6 +35,8 @@ if "show_gallery" not in st.session_state:
     st.session_state.show_gallery = False
 
 
+=======
+>>>>>>> 6aa14e97fc6c24c03645f7b658358d03f692edf2
 # --- HÀM LOAD DỮ LIỆU ---
 @st.cache_data(ttl=600)
 def load_data():
@@ -55,6 +58,7 @@ def load_data():
             st.error(f"Lỗi khi đọc file {file}: {e}") 
     return data.strip() if data else None
 
+<<<<<<< HEAD
 
 # --- TÓM TẮT NỘI DUNG ĐOẠN CHAT ---
 def summarize_chat(chat_history):
@@ -68,6 +72,8 @@ def summarize_chat(chat_history):
         return "Đoạn chat đã lưu"
 
 
+=======
+>>>>>>> 6aa14e97fc6c24c03645f7b658358d03f692edf2
 # --- ĐẶT QUY TẮC CHO MODEL ---
 def initialize_chat(data):
     """Khởi tạo phiên chat mới với bối cảnh (system prompt) nếu có."""
@@ -136,6 +142,7 @@ st.title("🦐 Chatbot Hỏi-Đáp về Quy Trình Nuôi Tôm")
 
 # --- THANH BÊN (SIDEBAR) ---
 with st.sidebar:
+<<<<<<< HEAD
     st.header("⚙️ Thiết lập")
 
     # ======= NÚT ĐOẠN CHAT MỚI =======
@@ -282,6 +289,16 @@ if st.session_state.show_gallery:
         st.sidebar.image(img, width=150)
 
 
+=======
+    st.header("Thiết lập")
+    if st.button("🗑️ Xóa lịch sử & Tải lại ngữ cảnh", use_container_width=True):
+        if "chat" in st.session_state:
+            del st.session_state.chat
+        if "display_messages" in st.session_state:
+            del st.session_state.display_messages     
+        st.cache_data.clear() 
+        st.rerun()
+>>>>>>> 6aa14e97fc6c24c03645f7b658358d03f692edf2
 # --- TẢI DỮ LIỆU VÀ KHỞI TẠO CHAT ---
 if "chat" not in st.session_state:
     loaded_shrimp_data = load_data()
@@ -332,9 +349,14 @@ if prompt := st.chat_input("Hỏi về quy trình nuôi tôm..."):
         st.session_state.display_messages.append(
             {"role": "assistant", "text": clean_text, "image": image_path}
         )
+<<<<<<< HEAD
         # Nếu bot gửi ảnh thì thêm vào thư viện
         if image_path:
             st.session_state.image_library.append(image_path)
         st.rerun()   
+=======
+        st.rerun() 
+            
+>>>>>>> 6aa14e97fc6c24c03645f7b658358d03f692edf2
     except Exception as e:
         st.error(f"❌ Lỗi khi gửi tin nhắn: {e}")
